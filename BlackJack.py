@@ -289,6 +289,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
 def Game(deck, player):
     dealer = Dealer(deck)                                        #Initialize Dealer
     print('WELCOME TO BLACKJACK')
+    print("Player's amount: {}".format(player.get_amnt()))
     bet_amnt = player.bet()
     i = 0
     while not bet_amnt and i < 10:
@@ -308,7 +309,7 @@ def Game(deck, player):
     elif(stmnt(player, dealer, int(bet_amnt)) == 'Y'):
         return
     while True:
-        print("1. Hit\n2. Stand\n3. See Yours\n4. See Dealer's\n5. Exit ")
+        print("1. Hit\n2. Stand\n3. See Yours\n4. See Dealer's\n5. See Amount\n6. Exit ")
         choice = input('Enter Your Choice: ')
         if choice == '1':
             if(player.get_value() >= 21):
@@ -335,6 +336,9 @@ def Game(deck, player):
         elif choice == '4':
             print("\nDealer's cards are: ")
             dealer.show()
+
+        elif choice == '5':
+            print("Player's amount: {}".format(player.get_amnt()))
 
         else:
             print('We hope to see you again')
