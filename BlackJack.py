@@ -104,7 +104,7 @@ class Deck:
 
 
 
- class Player:
+class Player:
 
 
     def __init__(self, deck, amount = 100):
@@ -149,7 +149,7 @@ class Deck:
 
 
     def hit(self, deck):
-        if self.hand_value > 21:
+        if self.hand_value >= 21:
             return False           ##Needs editing
 
         self.player.append(deck.draw())
@@ -223,10 +223,8 @@ class Dealer():
 
 
     def hit(self, deck):
-        if (self.hand_value) > 21:
-            return False  ##needs editing
         while(self.hand_value < 17):
-            self.dealer.append(deck.draw()
+            self.dealer.append(deck.draw())
             self.calc_value()
 
 
@@ -245,12 +243,16 @@ def check_win(player_value, dealer_value = 0, stand = False):
         return 'WIN'
     elif player_value > 21:
         return 'LOSE'
-    elif player_value < dealer_value and stand = True:
+    elif player_value < dealer_value and stand == True:
         return 'LOSE'
     return
 
 
-def stmnt(player, dealer, stand = False):
+def stmnt(player, dealer, bet_amnt, stand = False):
+    if(stand == True):
+        print('Your hand value is: {}'.format(player.get_value()))
+        print("Dealer's hand value is: {}".format(dealer.get_value()))
+
     if(check_win(player.get_value(), dealer.get_value(), stand) == 'WIN'):
         player.inc_amnt(bet_amnt)
         choice = input('Your Luck seems great Today? Want to have another go?(Y/N)')
@@ -273,6 +275,7 @@ def stmnt(player, dealer, stand = False):
 #PRObABLY IMPLEMENT MENU FUNCTION HERE
 
 def Game(deck, player):
+    playing = True
     dealer = Dealer(deck)                                        #Initialize Dealer
     print('WELCOME TO BLACKJACK')
     bet_amnt = player.bet()
@@ -280,43 +283,47 @@ def Game(deck, player):
     if(not bet_amnt):
         return 'N'
     #If doesn't want to play anymore, return NO
-    if(stmnt(player, dealer) == 'N'):
+    if(stmnt(player, dealer, bet_amnt) == 'N'):
         return 'N'
     #If want to continue playing, return blank to increase game iteration
-    elif(stmnt(player,dealer) == 'Y'):
+    elif(stmnt(player, dealer, bet_amnt) == 'Y'):
         return
-    print('1. Hit\n 2.Stand\n3. See\n4. Show\n5. Exit ')
-    choice = input('Enter Your Choice: ')
-    if choice == '1':
-        #Needs editing for not able to hit condition
-        #Also add condition if after hit the hand value crosses 21
-        if(not player.hit(deck)):
-            break
-    elif choice == '2':
-        print('Your hand value is: {}'.format(player.get_value()))
-        dealer.hit(deck)
-        print("Dealer's hand value is: {}".format(dealer.get_value()))
-        if (stmnt(player, dealer, stand = True) == 'N'):
-            return 'N'
+    while True:
+        print('1. Hit\n2. Stand\n3. See\n4. Show\n5. Exit ')
+        choice = input('Enter Your Choice: ')
+        if choice == '1':
+            #Needs editing for not able to hit condition
+            #Also add condition if after hit the hand value crosses 21
+            if(not player.hit(deck)):
+                dealer.hit(deck)
+                if(stmnt(player, dealer, bet_amnt, stand = True) == 'N'):
+                    return 'N'
+                else:
+                    return
+
+        elif choice == '2':
+            dealer.hit(deck)
+            if (stmnt(player, dealer, bet_amnt, stand = True) == 'N'):
+                return 'N'
+            else:
+                return
+        elif choice == '3':
+            print("\nDealer's cards are: ")
+            dealer.show()
+
+        elif choice == '4':
+            print("\nPlayer's cards are: ")
+            player.show()
+
         else:
-            return
-    elif choice == '3':
-        print("Dealer's cards are: ")
-        dealer.show()
-
-    elif choice == '4':
-        print("Player's cards are: ")
-        player.show()
-
-    else:
-        print('We hope to see you again')
-        return 'N'
+            print('We hope to see you again')
+            return 'N'
 
 
 
 
 
-"""
+
 def main():
     #Initialize Deck
     deck = Deck()
@@ -329,4 +336,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-"""
