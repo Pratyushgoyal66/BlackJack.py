@@ -2,8 +2,12 @@
 import random
 import sys
 ##ISSUES
+##Add final amount after game finishes.
+##Remove another go chance on final iteration.
+##Show hand value at all times.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
+
 SUITS = ['H','S','D','C']
 RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
