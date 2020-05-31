@@ -355,7 +355,7 @@ def main():
     #Initialize Player
     player = Player(deck)
     for i in range(10):
-        player.reset()
+        player.reset(deck)
         if(Game(deck, player) == 'N'):
             break
 
