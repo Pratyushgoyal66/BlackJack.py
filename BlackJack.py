@@ -1,18 +1,13 @@
 #Imports
 import random
 import sys
-##PROBABLY IMPLEMENT STAND ALONE MENU FUNCTION
-##USE WHILE TRUE FOR LOOPING INSIDE GAME
-##ONLY AFTER THAT START IMPLEMENTING THE REAL GAME
-##Remeber PLayer is Human in this project
-##So Create the game and check win functions accordingly
-##Probably decide what the game function is going to look like, then decide about win check
-##And finally see if globabl playing parameter is needed or not
-##Most probably, 'stand' parameter would be needed to be added to the 'hit' function
-##Game function needs to overhauled. There will be a main function which will do the main initialisations, while
-##    the game function will run the game and take deck, player and dealer as parameters. Dealer might be created
-##    anew.
-##Add a add_amnt function to the player class which will increase player's amount if he wins.
+##ISSUES
+##Player hand doesn't reset after game.
+##Some problem with win condition if game is repeated.
+##Add choice to see Amount
+##Should see both person's cards after initilization before first Choice
+
+
 
 #GLOBAL CONSTANTS
 SUITS = ['H','S','D','C']
@@ -104,7 +99,7 @@ class Deck:
 
 
 
- class Player:
+class Player:
 
 
     def __init__(self, deck, amount = 100):
@@ -136,6 +131,9 @@ class Deck:
         if len(self.player) > 2:
             self.hand_value, self.ace = self.player[-1].get_value(self.hand_value, self.ace)
 
+    def get_amnt(self):
+        return self.amount
+
 
     def show(self):
         for card in self.player:
@@ -146,7 +144,7 @@ class Deck:
 
 
     def hit(self, deck):
-        if self.hand_value > 21:
+        if self.hand_value >= 21:
             return False           ##Needs editing
 
         self.player.append(deck.draw())
@@ -154,10 +152,7 @@ class Deck:
         self.player[-1].show_format()
 
 
-    def bet(self, ctr = 0):
-        if(ctr == 10):
-            print("\nIt seems like you don't want to actually play the game\n")
-            return
+    def bet(self):
         bet_amnt = input('Player bet (50 or 100): ')
         if(bet_amnt == '50' or bet_amnt == '100'):
             if(int(bet_amnt) <= self.amount):
@@ -169,8 +164,8 @@ class Deck:
                 #If amount <50, betting should be impossible and the game should end.
                 print('Insufficient Funds')
         else:
-            print('Bet can only be 50 or 100')
-            self.bet(ctr + 1)
+            return False
+
 
     ##Probably Create Stand Function, Depend on class Game and if it is needed or not.
 
@@ -220,11 +215,9 @@ class Dealer():
 
 
     def hit(self, deck):
-        if (self.hand_value) > 21:
-            return False  ##needs editing
-        self.dealer.append(deck.draw())
-        self.calc_value()
-        self.dealer[-1].show_format()
+        while(self.hand_value < 17):
+            self.dealer.append(deck.draw())
+            self.calc_value()
 
 
     def get_value(self):
@@ -233,15 +226,45 @@ class Dealer():
 
 
 
-def check_win(player_value, dealer_value = 0):
+def check_win(player_value, dealer_value = 0, stand = False):
     if player_value == 21:
         return 'WIN'
     elif dealer_value > 21:
         return 'WIN'
     elif player_value > dealer_value and player_value < 22:
         return 'WIN'
-    else:
+    elif player_value > 21:
         return 'LOSE'
+    elif player_value < dealer_value and stand == True:
+        return 'LOSE'
+    return
+
+
+def stmnt(player, dealer, bet_amnt, stand = False):
+
+    if(check_win(player.get_value(), dealer.get_value(), stand) == 'WIN'):
+        print('Your hand value is: {}'.format(player.get_value()))
+        print("Dealer's hand value is: {}".format(dealer.get_value()))
+        player.inc_amnt(bet_amnt)
+        choice = input("YOU WON\nYour Luck seems great Today? Want to have another go?(Y/N)")
+        if(choice in ['y','Y','yes','Yes']):
+            return 'Y'
+        else:
+            return 'N'
+    elif(check_win(player.get_value(), dealer.get_value(), stand) == 'LOSE'):
+        print('Your hand value is: {}'.format(player.get_value()))
+        print("Dealer's hand value is: {}".format(dealer.get_value()))
+        if(player.get_amnt() > 49):
+            print("If at first you don't succeed, Try, try, try again.")
+            choice = input('Wanna have another go?(Y/N)')
+            if(choice in ['y','Y','yes','Yes']):
+                return 'Y'
+            else:
+                return 'N'
+        else:
+            print("Thanks for donating that money\nNo Shoo away!")
+            return 'N'
+    return
 
 #PRObABLY IMPLEMENT MENU FUNCTION HERE
 
@@ -249,26 +272,57 @@ def Game(deck, player):
     dealer = Dealer(deck)                                        #Initialize Dealer
     print('WELCOME TO BLACKJACK')
     bet_amnt = player.bet()
-    #If bet amount is None (Player doesn't want to play game), end game
-    if(not bet_amnt):
+    i = 0
+    while not bet_amnt and i < 10:
+        bet_amnt = player.bet()
+        i += 1
+    if not bet_amnt:
+        print("Sad you don't wanna play")
         return 'N'
-    if(check_win(player.get_value(), dealer.get_value()) == 'WIN'):
-        player.inc_amnt(bet_amnt)
-        choice = input('Your Luck seems great Today? Want to have another go?(Y/N)')
-        if(choice in ['y','Y','yes','Yes']):
-            return
+    #If doesn't want to play anymore, return NO
+    if(stmnt(player, dealer, int(bet_amnt)) == 'N'):
+        return 'N'
+    #If want to continue playing, return blank to increase game iteration
+    elif(stmnt(player, dealer, int(bet_amnt)) == 'Y'):
+        return
+    while True:
+        print("1. Hit\n2. Stand\n3. See Yours\n4. See Dealer's\n5. Exit ")
+        choice = input('Enter Your Choice: ')
+        if choice == '1':
+            if(player.get_value() >= 21):
+                dealer.hit(deck)
+                if(stmnt(player, dealer, int(bet_amnt), stand = True) == 'N'):
+                    return 'N'
+                else:
+                    return
+            else:
+                player.hit(deck)
+
+        elif choice == '2':
+            dealer.hit(deck)
+            if (stmnt(player, dealer, int(bet_amnt), stand = True) == 'N'):
+                return 'N'
+            else:
+                return
+
+        elif choice == '3':
+            print("\nPlayer's cards are: ")
+            player.show()
+
+
+        elif choice == '4':
+            print("\nDealer's cards are: ")
+            dealer.show()
+
         else:
+            print('We hope to see you again')
             return 'N'
-    print('1. Hit\n 2.Stand\n3. See\n4. Show\n5. Exit ')
-    choice = input('Enter Your Choice: ')
-    if choice == '1':
-        #Needs editing for not able to hit condition
-        player.hit()
 
 
 
 
-"""
+
+
 def main():
     #Initialize Deck
     deck = Deck()
@@ -281,4 +335,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-"""
