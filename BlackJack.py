@@ -1,18 +1,13 @@
 #Imports
 import random
 import sys
-##PROBABLY IMPLEMENT STAND ALONE MENU FUNCTION
-##USE WHILE TRUE FOR LOOPING INSIDE GAME
-##ONLY AFTER THAT START IMPLEMENTING THE REAL GAME
-##Remeber PLayer is Human in this project
-##So Create the game and check win functions accordingly
-##Probably decide what the game function is going to look like, then decide about win check
-##And finally see if globabl playing parameter is needed or not
-##Most probably, 'stand' parameter would be needed to be added to the 'hit' function
-##Game function needs to overhauled. There will be a main function which will do the main initialisations, while
-##    the game function will run the game and take deck, player and dealer as parameters. Dealer might be created
-##    anew.
-##Add a add_amnt function to the player class which will increase player's amount if he wins.
+##ISSUES
+##Player hand doesn't reset after game.
+##Some problem with win condition if game is repeated.
+##Add choice to see Amount
+##Should see both person's cards after initilization before first Choice
+
+
 
 #GLOBAL CONSTANTS
 SUITS = ['H','S','D','C']
