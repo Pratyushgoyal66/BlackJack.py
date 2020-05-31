@@ -2,14 +2,8 @@
 import random
 import sys
 ##ISSUES
-##Player hand doesn't reset after game.
-##Some problem with win condition if game is repeated.
-##Add choice to see Amount
-##Should see both person's cards after initilization before first Choice
-
-
-
-#GLOBAL CONSTANTS
+##Remove Unnecessary Code
+##Try to beautify code a little
 SUITS = ['H','S','D','C']
 RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
@@ -166,6 +160,16 @@ class Player:
         else:
             return False
 
+    def reset(self, deck):
+        self.player.clear()
+        self.player = [deck.draw() for _ in range(2)]
+        self.hand_value = 0
+        self.ace = (0, False)
+        for card in self.player:
+            self.hand_value, self.ace = card.get_value(self.hand_value, self.ace)
+
+
+
 
     ##Probably Create Stand Function, Depend on class Game and if it is needed or not.
 
@@ -231,7 +235,7 @@ def check_win(player_value, dealer_value = 0, stand = False):
         return 'WIN'
     elif dealer_value > 21:
         return 'WIN'
-    elif player_value > dealer_value and player_value < 22:
+    elif player_value > dealer_value and player_value < 22 and stand == True:
         return 'WIN'
     elif player_value > 21:
         return 'LOSE'
@@ -243,26 +247,34 @@ def check_win(player_value, dealer_value = 0, stand = False):
 def stmnt(player, dealer, bet_amnt, stand = False):
 
     if(check_win(player.get_value(), dealer.get_value(), stand) == 'WIN'):
+        print("\nPlayer's cards are: ")
+        player.show()
+        print("\nDealer's cards are: ")
+        dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         player.inc_amnt(bet_amnt)
-        choice = input("YOU WON\nYour Luck seems great Today? Want to have another go?(Y/N)")
+        choice = input("YOU WON\nYour Luck seems great Today? Want to have another go?(Y/N): ")
         if(choice in ['y','Y','yes','Yes']):
             return 'Y'
         else:
             return 'N'
     elif(check_win(player.get_value(), dealer.get_value(), stand) == 'LOSE'):
+        print("\nPlayer's cards are: ")
+        player.show()
+        print("\nDealer's cards are: ")
+        dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         if(player.get_amnt() > 49):
-            print("If at first you don't succeed, Try, try, try again.")
-            choice = input('Wanna have another go?(Y/N)')
+            print("YOU LOSE\nIf at first you don't succeed, Try, try, try again.")
+            choice = input('Wanna have another go?(Y/N): ')
             if(choice in ['y','Y','yes','Yes']):
                 return 'Y'
             else:
                 return 'N'
         else:
-            print("Thanks for donating that money\nNo Shoo away!")
+            print("Thanks for donating that money\nNow Shoo away!")
             return 'N'
     return
 
@@ -271,6 +283,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
 def Game(deck, player):
     dealer = Dealer(deck)                                        #Initialize Dealer
     print('WELCOME TO BLACKJACK')
+    print("Player's amount: {}".format(player.get_amnt()))
     bet_amnt = player.bet()
     i = 0
     while not bet_amnt and i < 10:
@@ -280,13 +293,17 @@ def Game(deck, player):
         print("Sad you don't wanna play")
         return 'N'
     #If doesn't want to play anymore, return NO
+    print("\n\nPlayer's cards are: ")
+    player.show()
+    print("\n\nDealer's cards are: ")
+    dealer.show()
     if(stmnt(player, dealer, int(bet_amnt)) == 'N'):
         return 'N'
     #If want to continue playing, return blank to increase game iteration
     elif(stmnt(player, dealer, int(bet_amnt)) == 'Y'):
         return
     while True:
-        print("1. Hit\n2. Stand\n3. See Yours\n4. See Dealer's\n5. Exit ")
+        print("1. Hit\n2. Stand\n3. See Yours\n4. See Dealer's\n5. See Amount\n6. Exit ")
         choice = input('Enter Your Choice: ')
         if choice == '1':
             if(player.get_value() >= 21):
@@ -314,6 +331,9 @@ def Game(deck, player):
             print("\nDealer's cards are: ")
             dealer.show()
 
+        elif choice == '5':
+            print("Player's amount: {}".format(player.get_amnt()))
+
         else:
             print('We hope to see you again')
             return 'N'
@@ -329,6 +349,7 @@ def main():
     #Initialize Player
     player = Player(deck)
     for i in range(10):
+        player.reset(deck)
         if(Game(deck, player) == 'N'):
             break
 
