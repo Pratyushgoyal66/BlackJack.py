@@ -166,6 +166,16 @@ class Player:
         else:
             return False
 
+    def reset(self, deck):
+        self.player.clear()
+        self.player = [deck.draw() for _ in range(2)]
+        self.hand_value = 0
+        self.ace = (0, False)
+        for card in self.player:
+            self.hand_value, self.ace = card.get_value(self.hand_value, self.ace)
+
+
+
 
     ##Probably Create Stand Function, Depend on class Game and if it is needed or not.
 
@@ -262,7 +272,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
             else:
                 return 'N'
         else:
-            print("Thanks for donating that money\nNo Shoo away!")
+            print("Thanks for donating that money\nNow Shoo away!")
             return 'N'
     return
 
@@ -329,6 +339,7 @@ def main():
     #Initialize Player
     player = Player(deck)
     for i in range(10):
+        player.reset()
         if(Game(deck, player) == 'N'):
             break
 
