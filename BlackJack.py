@@ -253,6 +253,10 @@ def check_win(player_value, dealer_value = 0, stand = False):
 def stmnt(player, dealer, bet_amnt, stand = False):
 
     if(check_win(player.get_value(), dealer.get_value(), stand) == 'WIN'):
+        print("\nPlayer's cards are: ")
+        player.show()
+        print("\nDealer's cards are: ")
+        dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         player.inc_amnt(bet_amnt)
@@ -262,6 +266,10 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         else:
             return 'N'
     elif(check_win(player.get_value(), dealer.get_value(), stand) == 'LOSE'):
+        print("\nPlayer's cards are: ")
+        player.show()
+        print("\nDealer's cards are: ")
+        dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         if(player.get_amnt() > 49):
@@ -290,6 +298,10 @@ def Game(deck, player):
         print("Sad you don't wanna play")
         return 'N'
     #If doesn't want to play anymore, return NO
+    print("\n\nPlayer's cards are: ")
+    player.show()
+    print("\n\nDealer's cards are: ")
+    dealer.show()
     if(stmnt(player, dealer, int(bet_amnt)) == 'N'):
         return 'N'
     #If want to continue playing, return blank to increase game iteration
