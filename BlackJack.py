@@ -2,14 +2,8 @@
 import random
 import sys
 ##ISSUES
-##Player hand doesn't reset after game.
-##Some problem with win condition if game is repeated.
-##Add choice to see Amount
-##Should see both person's cards after initilization before first Choice
-
-
-
-#GLOBAL CONSTANTS
+##Remove Unnecessary Code
+##Try to beautify code a little
 SUITS = ['H','S','D','C']
 RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
