@@ -356,8 +356,11 @@ def main():
     player = Player(deck)
     for i in range(10):
         player.reset(deck)
-        if(Game(deck, player) == 'N'):
+        playing = Game(deck, player)
+        if(playing == 'N'):
             break
+    if(i == 9 and playing != 'N'):
+        print("Sorry, you can only win this much.")
 
 
 if __name__ == '__main__':
