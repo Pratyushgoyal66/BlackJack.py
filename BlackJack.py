@@ -237,12 +237,14 @@ class Dealer():
 def check_win(player_value, dealer_value = 0, stand = False):
     if player_value == 21:
         return 'WIN'
-    elif dealer_value > 21:
-        return 'WIN'
-    elif player_value > dealer_value and player_value < 22 and stand == True:
-        return 'WIN'
     elif player_value > 21:
         return 'LOSE'
+    elif dealer_value > 21:
+        return 'WIN'
+    elif dealer_value == 21:
+        return 'LOSE'
+    elif player_value > dealer_value and stand == True:
+        return 'WIN'
     elif player_value < dealer_value and stand == True:
         return 'LOSE'
     return
