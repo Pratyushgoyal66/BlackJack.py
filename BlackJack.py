@@ -264,8 +264,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         player.inc_amnt(bet_amnt)
-        print('You Have in hand money: {}'.format(player.get_amnt()))
-        choice = input("YOU WON\nYour Luck seems great Today? Want to have another go?(Y/N): ")
+        choice = input("YOU WON\nYou Have in hand money: {}\nYour Luck seems great Today? Want to have another go?(Y/N): ".format(player.get_amnt()))
         if(choice in ['y','Y','yes','Yes']):
             return 'Y'
         else:
@@ -278,9 +277,8 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
-        print('You Have in hand money: {}'.format(player.get_amnt()))
         if(player.get_amnt() > 49):
-            print("YOU LOSE\nIf at first you don't succeed, Try, try, try again.")
+            print("YOU LOSE\nYou Have in hand money: {}\nIf at first you don't succeed, Try, try, try again.".format(player.get_amnt()))
             choice = input('Wanna have another go?(Y/N): ')
             if(choice in ['y','Y','yes','Yes']):
                 return 'Y'
