@@ -291,6 +291,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
             return 'N'
     return
 
+
 #PRObABLY IMPLEMENT MENU FUNCTION HERE
 
 def Game(deck, player):
@@ -351,9 +352,16 @@ def Game(deck, player):
         else:
             print('We hope to see you again')
             return 'N'
-
-
-
+        if(player.get_value() == 21):
+            if (stmnt(player, dealer, int(bet_amnt), stand = True) == 'N'):
+                return 'N'
+            else:
+                return
+        elif(player.get_value() > 21):
+            if (stmnt(player, dealer, int(bet_amnt), stand = True) == 'N'):
+                return 'N'
+            else:
+                return
 
 
 
