@@ -1,8 +1,11 @@
 #Imports
 import random
 import sys
+##FEATURES to do
+##Player wins as soon as hand value reaches 21
+##Player loses as soon as hand values crosses 21
+##don't wait for next turn in both above cases
 ##ISSUES
-##Show hand value at all times.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
 
@@ -134,6 +137,7 @@ class Player:
     def show(self):
         for card in self.player:
             card.show_format()
+        print("Player's Hand value: {}".format(self.hand_value))
 
     def inc_amnt(self, bet_amnt):
         self.amount += bet_amnt * 2
@@ -146,6 +150,7 @@ class Player:
         self.player.append(deck.draw())
         self.calc_value()
         self.player[-1].show_format()
+        print("Player's Hand value: {}".format(self.hand_value))
 
 
     def bet(self):
@@ -253,6 +258,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
     if(check_win(player.get_value(), dealer.get_value(), stand) == 'WIN'):
         print("\nPlayer's cards are: ")
         player.show()
+        print("Player's Hand value: {}".format(player.get_value()))
         print("\nDealer's cards are: ")
         dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
@@ -267,6 +273,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
     elif(check_win(player.get_value(), dealer.get_value(), stand) == 'LOSE'):
         print("\nPlayer's cards are: ")
         player.show()
+        print("Player's Hand value: {}".format(player.get_value()))
         print("\nDealer's cards are: ")
         dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
@@ -303,10 +310,11 @@ def Game(deck, player):
     player.show()
     print("\n\nDealer's cards are: ")
     dealer.show()
-    if(stmnt(player, dealer, int(bet_amnt)) == 'N'):
+    playing = stmnt(player, dealer, int(bet_amnt))
+    if(playing == 'N'):
         return 'N'
     #If want to continue playing, return blank to increase game iteration
-    elif(stmnt(player, dealer, int(bet_amnt)) == 'Y'):
+    elif(playing == 'Y'):
         return
     while True:
         print("1. Hit\n2. Stand\n3. See Yours\n4. See Dealer's\n5. See Amount\n6. Exit ")
