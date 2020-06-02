@@ -1,11 +1,8 @@
 #Imports
 import random
 import sys
-##FEATURES to do
-##Player wins as soon as hand value reaches 21
-##Player loses as soon as hand values crosses 21
-##don't wait for next turn in both above cases
 ##ISSUES
+##Bug: After stand game doesn't show win or lose in some situation.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
 
