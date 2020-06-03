@@ -9,7 +9,7 @@ import sys
 ##Try to beautify code a little
 
 SUITS = ['H','S','D','C']
-RANKS = ['10', '10']
+RANKS = ['10','10']
 
 
 class Card:
@@ -247,7 +247,7 @@ def check_win(player_value, dealer_value = 0, stand = False):
         return 'LOSE'
     elif player_value > dealer_value and stand == True:
         return 'WIN'
-    elif player_value < dealer_value and stand == True:
+    elif player_value <= dealer_value and stand == True:
         return 'LOSE'
     return
 
@@ -277,6 +277,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         if(player.get_amnt() > 49):
+
             print("YOU LOSE\nYou Have in hand money: {}\nIf at first you don't succeed, Try, try, try again.".format(player.get_amnt()))
             choice = input('Wanna have another go?(Y/N): ')
             if(choice in ['y','Y','yes','Yes']):
