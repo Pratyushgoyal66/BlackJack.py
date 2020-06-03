@@ -9,7 +9,7 @@ import sys
 ##Try to beautify code a little
 
 SUITS = ['H','S','D','C']
-RANKS = ['10','10']
+RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
 
 class Card:
