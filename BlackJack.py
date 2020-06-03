@@ -1,11 +1,10 @@
 #Imports
 import random
 import sys
-##FEATURES to do
-##Player wins as soon as hand value reaches 21
-##Player loses as soon as hand values crosses 21
-##don't wait for next turn in both above cases
+###COMMENT
+##This branch is to understand the occurence of below bug and fix it.
 ##ISSUES
+##Bug: After stand game doesn't show win or lose in some situation.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
 
@@ -248,7 +247,7 @@ def check_win(player_value, dealer_value = 0, stand = False):
         return 'LOSE'
     elif player_value > dealer_value and stand == True:
         return 'WIN'
-    elif player_value < dealer_value and stand == True:
+    elif player_value <= dealer_value and stand == True:
         return 'LOSE'
     return
 
@@ -264,8 +263,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
         player.inc_amnt(bet_amnt)
-        print('You Have in hand money: {}'.format(player.get_amnt()))
-        choice = input("YOU WON\nYour Luck seems great Today? Want to have another go?(Y/N): ")
+        choice = input("YOU WON\nYou Have in hand money: {}\nYour Luck seems great Today? Want to have another go?(Y/N): ".format(player.get_amnt()))
         if(choice in ['y','Y','yes','Yes']):
             return 'Y'
         else:
@@ -278,9 +276,9 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
-        print('You Have in hand money: {}'.format(player.get_amnt()))
         if(player.get_amnt() > 49):
-            print("YOU LOSE\nIf at first you don't succeed, Try, try, try again.")
+
+            print("YOU LOSE\nYou Have in hand money: {}\nIf at first you don't succeed, Try, try, try again.".format(player.get_amnt()))
             choice = input('Wanna have another go?(Y/N): ')
             if(choice in ['y','Y','yes','Yes']):
                 return 'Y'
@@ -290,6 +288,7 @@ def stmnt(player, dealer, bet_amnt, stand = False):
             print("Thanks for donating that money\nNow Shoo away!")
             return 'N'
     return
+
 
 #PRObABLY IMPLEMENT MENU FUNCTION HERE
 
@@ -351,9 +350,16 @@ def Game(deck, player):
         else:
             print('We hope to see you again')
             return 'N'
-
-
-
+        if(player.get_value() == 21):
+            if (stmnt(player, dealer, int(bet_amnt), stand = True) == 'N'):
+                return 'N'
+            else:
+                return
+        elif(player.get_value() > 21):
+            if (stmnt(player, dealer, int(bet_amnt), stand = True) == 'N'):
+                return 'N'
+            else:
+                return
 
 
 
