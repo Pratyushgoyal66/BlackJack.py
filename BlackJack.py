@@ -1,10 +1,9 @@
 #Imports
 import random
 import sys
-###COMMENT
-##This branch is to understand the occurence of below bug and fix it.
+##Branch to reduce code and beautify it.
 ##ISSUES
-##Bug: After stand game doesn't show win or lose in some situation.
+##edit stmnt function to make it more efficient and beautiful and less monsterous.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
 
