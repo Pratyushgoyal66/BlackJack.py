@@ -273,7 +273,6 @@ def stmnt(player, dealer, bet_amnt, stand = False):
                 return 'N'
         else:
             if player.get_amnt() > 49:
-                print("YOU LOSE\nIf at first you don't succeed, Try, try, try again.")
                 print("YOU LOSE\nYou Have in hand money: {}\nIf at first you don't succeed, Try, try, try again.".format(player.get_amnt()))
                 choice = input('Wanna have another go?(Y/N): ')
                 if(choice in ['y','Y','yes','Yes']):
