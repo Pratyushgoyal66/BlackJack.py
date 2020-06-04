@@ -1,11 +1,14 @@
 #Imports
 import random
 import sys
+##IDEA
+##Create a documentation branch to comment each code
 ##Branch to reduce code and beautify it.
 ##ISSUES
 ##edit stmnt function to make it more efficient and beautiful and less monsterous.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
+
 
 SUITS = ['H','S','D','C']
 RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
