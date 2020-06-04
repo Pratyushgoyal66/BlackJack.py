@@ -1,10 +1,9 @@
 #Imports
 import random
 import sys
-###COMMENT
-##This branch is to understand the occurence of below bug and fix it.
+##Branch to reduce code and beautify it.
 ##ISSUES
-##Bug: After stand game doesn't show win or lose in some situation.
+##edit stmnt function to make it more efficient and beautiful and less monsterous.
 ##Remove Unnecessary Code
 ##Try to beautify code a little
 
@@ -254,7 +253,10 @@ def check_win(player_value, dealer_value = 0, stand = False):
 
 def stmnt(player, dealer, bet_amnt, stand = False):
 
-    if(check_win(player.get_value(), dealer.get_value(), stand) == 'WIN'):
+    res = check_win(player.get_value(), dealer.get_value(), stand)
+    if not res:
+        return
+    else:
         print("\nPlayer's cards are: ")
         player.show()
         print("Player's Hand value: {}".format(player.get_value()))
@@ -262,31 +264,24 @@ def stmnt(player, dealer, bet_amnt, stand = False):
         dealer.show(hidden = False)
         print('Your hand value is: {}'.format(player.get_value()))
         print("Dealer's hand value is: {}".format(dealer.get_value()))
-        player.inc_amnt(bet_amnt)
-        choice = input("YOU WON\nYou Have in hand money: {}\nYour Luck seems great Today? Want to have another go?(Y/N): ".format(player.get_amnt()))
-        if(choice in ['y','Y','yes','Yes']):
-            return 'Y'
-        else:
-            return 'N'
-    elif(check_win(player.get_value(), dealer.get_value(), stand) == 'LOSE'):
-        print("\nPlayer's cards are: ")
-        player.show()
-        print("Player's Hand value: {}".format(player.get_value()))
-        print("\nDealer's cards are: ")
-        dealer.show(hidden = False)
-        print('Your hand value is: {}'.format(player.get_value()))
-        print("Dealer's hand value is: {}".format(dealer.get_value()))
-        if(player.get_amnt() > 49):
-
-            print("YOU LOSE\nYou Have in hand money: {}\nIf at first you don't succeed, Try, try, try again.".format(player.get_amnt()))
-            choice = input('Wanna have another go?(Y/N): ')
+        if res == 'WIN':
+            player.inc_amnt(bet_amnt)
+            choice = input("YOU WON\nYou Have in hand money: {}\nYour Luck seems great Today? Want to have another go?(Y/N): ".format(player.get_amnt()))
             if(choice in ['y','Y','yes','Yes']):
                 return 'Y'
             else:
                 return 'N'
         else:
-            print("Thanks for donating that money\nNow Shoo away!")
-            return 'N'
+            if player.get_amnt() > 49:
+                print("YOU LOSE\nYou Have in hand money: {}\nIf at first you don't succeed, Try, try, try again.".format(player.get_amnt()))
+                choice = input('Wanna have another go?(Y/N): ')
+                if(choice in ['y','Y','yes','Yes']):
+                    return 'Y'
+                else:
+                    return 'N'
+            else:
+                print("Thanks for donating that money\nNow Shoo away!")
+                return 'N'
     return
 
 
